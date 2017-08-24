@@ -1,0 +1,63 @@
+/**
+* swiper-tab
+*/
+.swiper-tab-wrapper {
+  background: #fff;
+  width: 100%;
+  min-height: 50px;
+  overflow: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+.swiper-tab-inner {
+  position: relative;
+}
+.swiper-tab-header {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+}
+.swiper-tab-header .swiper-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  background: #eee;
+}
+.swiper-tab-header .swiper-tab-item.swiper-tab-item-active {
+  background: #15A25D;
+}
+.swiper-tab-body {
+  min-height: 50px;
+}
+.swiper-tab-body .swiper-tab-item {
+  padding: 15px;
+  display: none;
+  border-left: 1px solid red;
+  height: 450px;
+}
+.swiper-tab-body .swiper-tab-item.swiper-tab-item-active {
+  display: block;
+}
+.swiper-tab-wrapper.swiper-tab-animate .swiper-tab-body {
+  display: flex;
+}
+.swiper-tab-wrapper.swiper-tab-animate .swiper-tab-body .swiper-tab-item {
+  display: block;
+  flex: 1;
+}
+.swiper-tab-close-btn {
+  position: absolute;
+  bottom: 20px;
+  border: 1px solid #14e432;
+  background: #fff;
+}
+.swiper-tab-close-btn.swiper-tab-close-btn-circle {
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 20px;
+  color: #14e432;
+  left: 50%;
+  margin-left: -15px;
+}

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <swiper-tab slidable v-model="activeIndex">
+        <swiper-tab slidable :distance="0.5" :show="show" @close="dd" animate closebtn v-model="activeIndex">
             <swiper-tab-header>
                 <swiper-tab-item>
                     11
@@ -31,26 +31,29 @@
             </swiper-tab-body> 
         </swiper-tab>
         
-
+        <div @click="dd">dsgffdhgfdjhgfjfh</div>
      
     </div>
 </template>
 
 <script>
-import SwiperTab, {SwiperTabHeader, SwiperTabBody, SwiperTabItem} from "./index.js";
+import {SwiperTab, SwiperTabHeader, SwiperTabBody, SwiperTabItem} from "./index.js";
 
 
 export default {
     data(){
         return {
-            activeIndex: 0
+            activeIndex: 0,
+            show: true
         }
     },
     props: {
         
     },
     methods: {
-
+        dd(){
+            this.show = !this.show;
+        }
     },
     components: {
         SwiperTab,

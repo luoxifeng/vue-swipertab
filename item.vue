@@ -3,8 +3,8 @@
 
 <template>
     <div class="swiper-tab-item" 
-        :class="[index == $parent.index ? 'swiper-tab-item-active' : '']"
-        @click="switchTab">
+        :class="[index == grandpa.slideToIndex ? 'swiper-tab-item-active' : '']"
+        @click="clickSwitchTab">
         <slot></slot>
     </div>
 </template>
@@ -24,11 +24,7 @@ export default {
 
     },
     watch: {
-        active(newVal){
-            if (this.$parent.$options.name){
-
-            }
-        }
+       
     },
     created(){
         if (!this.varifyContainer()) return;
@@ -52,9 +48,11 @@ export default {
         setItemIndex(){
             this.index = this.$parent.$children.length - 1;
         },
-        switchTab(){
+        clickSwitchTab(){
+            console.log("点击切换")
             if (this.parentName === "SwiperTabBody") return;
             if (this.index == this.$parent.index) return;
+            console.log("点击切换")
             this.bus.$emit("switchTab", this.index);
         }
     },

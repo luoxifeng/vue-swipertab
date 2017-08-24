@@ -1,6 +1,10 @@
 <template>
     <div class="swiper-tab-header">
         <slot></slot>
+        <div class="swiper-tab-line-wrapper">
+            <div class="swiper-tab-line-inner">
+            </div>
+        </div>
     </div>
 </template>
 
