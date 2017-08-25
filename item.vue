@@ -3,9 +3,11 @@
 
 <template>
     <div class="swiper-tab-item" 
-        :class="[index == grandpa.slideToIndex ? 'swiper-tab-item-active' : '']"
+        :class="[index == active ? 'swiper-tab-item-active' : '']"
         @click="clickSwitchTab">
-        <slot></slot>
+        <div class="swiper-tab-item-inner">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -21,7 +23,12 @@ export default {
         }
     },
     props: {
-
+        
+    },
+    computed: {
+        active(){
+            return this.grandpa.slideToIndex;
+        }
     },
     watch: {
        

@@ -1,12 +1,11 @@
 <template>
     <div class="swiper-tab-wrapper"
-        :class="[(slidable || animate) ? 'swiper-tab-animate' : '']">
+        :class="[(slidable || animate) ? 'swiper-tab-animate' : '', wrapperCls]">
         <div class="swiper-tab-inner" ref="slot">
             <slot></slot>
-            <span v-if="closeBtnText" :class="closeBtnCls"
-                @click="$emit('close')">
-                {{closeBtnText}}
-            <span>
+            <div v-if="closeBtnText" :class="closeBtnCls">
+                <a @click="$emit('close')">{{closeBtnText}}</a>
+            <div>
         </div>
     </div>
 </template>
@@ -27,6 +26,10 @@ export default {
         }
     },
     props: {
+        wrapperCls: {
+            type: String,
+            default: ""
+        },
         show: {
             type: Boolean,
             default: true
@@ -55,12 +58,17 @@ export default {
             type: [Boolean, String],
             default: false
         },
+        cursor: {
+            type: [Boolean, String],
+            default: false
+        }
     },
     computed: {
         closeBtnText(){
             let text = "";
             if(is.str(this.closebtn) && this.closebtn.trim()) {
                 text = this.closebtn.trim();
+            } else if(is.bool(this.closebtn) && !this.closebtn) {
             } else {
                 text = "×";
             }
@@ -136,7 +144,10 @@ export default {
         this.initBus();
     },
     mounted(){
-        this.initProcess();
+        this.$nextTick(() => {
+            this.initProcess();
+        })
+        
         this.initEvent();
     }
 }

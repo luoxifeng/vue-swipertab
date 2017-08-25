@@ -1,5 +1,5 @@
 <template>
-    <div class="swiper-tab-body" :style="bodyStyle" ref="body" 
+    <div class="swiper-tab-body" :style="bodyStyle" ref="body"
         @touchstart="onSlideSatrt" 
         @touchmove="onSlideMove" 
         @touchend="onSlideEnd">
@@ -13,22 +13,18 @@ export default {
     data(){
         return {
             startTime: 0,
-            // slowOn: false,//降速标记
             startX: 0,
             startY: 0,
             tempX: 0,
             tempY: 0,
-            // direction: 1,//滑动方向1向左，-1向右
         }
     },
     props: {
 
     },
     computed: {
-        childrenCount(){
-            return this.$children.length;
-        },
-        direction(){
+      
+        direction(){//滑动方向 1向左，-1向右
             return this.tempX - this.startX > 0 ? -1 : 1;
         },
         animating(){
@@ -52,6 +48,9 @@ export default {
         distance(){
             return this.$parent.distance;
         },
+        animate(){
+            return this.$parent.animate;
+        },
         translateX(){
             return `translateX(-${this.index*this.width}px)`;
         },
@@ -60,15 +59,15 @@ export default {
         },
         isCanNotSwitch(){
             return [
-                [this.index == 0 , this.direction == -1].every(t => t),
-                [this.index == this.childrenCount - 1 , this.direction == 1].every(t => t)
+                [this.index <= 0 , this.direction == -1].every(t => t),
+                [this.index >= this.$children.length - 1 , this.direction == 1].every(t => t)
             ].some(t => t);
         },
         bodyStyle(){
             let style = {},
                 parent = this.$parent,
                 count = this.$children.length || 1;
-            if (parent.slidable) {
+            if (this.slidable || this.animate) {
                 style["width"] = `${this.width*count}px`;
                 style["transform"] = this.translateX;
                 style["transition"] = this.transition;
@@ -80,11 +79,18 @@ export default {
         }
     },
     watch: {
-        tempX(newVal, oldVal){
-
-        }
+       
     },
     methods: {
+        isVerticalSlide(touch){//判断是不是竖直方向滑动
+            let offsetX = touch.clientX - this.startX;
+            let offsetY = touch.clientY - this.startY;
+            return Math.abs(offsetY) > Math.abs(offsetX);//竖直方向
+        },  
+        isBeyondDistance(touch){//超过自动滑动距离的时候，tab要变化active
+            touch = touch || {clientX: this.tempx};
+            return Math.abs(touch.clientX - this.startX) > this.width*this.distance;
+        },
         addEventListener(){//动画结束事件监听
             this.$el.addEventListener("webkitTransitionEnd", () => {
                 console.log("----动画结束----")
@@ -108,7 +114,12 @@ export default {
             let touch = e.targetTouches[0];
             let offset = touch.clientX - this.tempX;//水平偏移量
             this.tempX = touch.clientX;
-            if(this.isCanNotSwitch) slow = 0.5;//到边界的时候，减速
+            if (this.isCanNotSwitch) {//到边界的时候，减速c
+                slow = 0.5;
+            } else {
+                let next = this.isBeyondDistance(touch) ? this.direction : 0;
+                this.bus.$emit("slideToIndex", this.index + next)
+            }
             /translateX\((.+?)px\)/.test(this.$el.style.transform);
             style.transform = `translateX(${+RegExp.$1 + offset*slow}px)`;
             style.transition = '';

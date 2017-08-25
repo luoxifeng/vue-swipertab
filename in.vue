@@ -1,32 +1,40 @@
 <template>
     <div>
-        <swiper-tab slidable :distance="0.5" :show="show" @close="dd" animate closebtn v-model="activeIndex">
+        <swiper-tab slidable 
+            :distance="0.5" 
+            :show="show" 
+            @close="dd" 
+            animate
+            closebtn
+            cursor
+            wrapperCls="kkk"
+            v-model="activeIndex">
             <swiper-tab-header>
                 <swiper-tab-item>
-                    11
+                    tab1
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    22
+                    tab2
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    33
+                    tab3
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    44
+                    tab4
                 </swiper-tab-item>
             </swiper-tab-header>
             <swiper-tab-body>
                 <swiper-tab-item>
-                    11111
+                    tab1内容
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    222222
+                    tab2内容
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    333333
+                    tab3内容
                 </swiper-tab-item>
                 <swiper-tab-item>
-                    444444
+                    tab4内容
                 </swiper-tab-item>
             </swiper-tab-body> 
         </swiper-tab>
@@ -43,7 +51,7 @@ import {SwiperTab, SwiperTabHeader, SwiperTabBody, SwiperTabItem} from "./index.
 export default {
     data(){
         return {
-            activeIndex: 0,
+            activeIndex: 1,
             show: true
         }
     },

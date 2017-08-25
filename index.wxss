@@ -12,18 +12,42 @@
   position: relative;
 }
 .swiper-tab-header {
+  position: relative;
   display: flex;
-  justify-content: space-around;
   border-bottom: 1px solid #ccc;
 }
 .swiper-tab-header .swiper-tab-item {
+  position: relative;
+  z-index: 1;
   flex: 1;
   text-align: center;
-  padding: 15px;
   background: #eee;
+  color: #676767;
+  min-height: 20px;
+  cursor: pointer;
+  background: linear-gradient(#bebebe, transparent, #bebebe);
+  transition: color 0.5s ease-in-out;
+}
+.swiper-tab-header .swiper-tab-item::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.swiper-tab-header .swiper-tab-item-inner {
+  padding: 10px;
 }
 .swiper-tab-header .swiper-tab-item.swiper-tab-item-active {
-  background: #15A25D;
+  color: #000;
+}
+.swiper-tab-header .swiper-tab-item.swiper-tab-item-active::after {
+  opacity: 1;
+  background: linear-gradient(#333, transparent, #333);
 }
 .swiper-tab-body {
   min-height: 50px;
@@ -31,11 +55,29 @@
 .swiper-tab-body .swiper-tab-item {
   padding: 15px;
   display: none;
-  border-left: 1px solid red;
   height: 450px;
 }
 .swiper-tab-body .swiper-tab-item.swiper-tab-item-active {
   display: block;
+}
+.swiper-tab-line-wrapper {
+  position: absolute;
+  top: 100%;
+  z-index: 10;
+}
+.swiper-tab-line-wrapper .swiper-tab-line-inner {
+  height: 3px;
+  position: relative;
+  background: #8ce5be;
+  display: flex;
+  justify-content: center;
+}
+.swiper-tab-line-wrapper .swiper-tab-line-inner em {
+  position: absolute;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #8ce5be;
+  bottom: 0;
 }
 .swiper-tab-wrapper.swiper-tab-animate .swiper-tab-body {
   display: flex;
@@ -45,19 +87,27 @@
   flex: 1;
 }
 .swiper-tab-close-btn {
+  cursor: pointer;
+  width: 100%;
   position: absolute;
   bottom: 20px;
-  border: 1px solid #14e432;
-  background: #fff;
+  display: flex;
+  justify-content: center;
 }
-.swiper-tab-close-btn.swiper-tab-close-btn-circle {
-  border-radius: 50px;
+.swiper-tab-close-btn a {
+  border: 1px solid #14e432;
+}
+.swiper-tab-close-btn-circle a {
+  display: flex;
   width: 30px;
   height: 30px;
   text-align: center;
-  line-height: 30px;
-  font-size: 20px;
+  border-radius: 50px;
   color: #14e432;
-  left: 50%;
-  margin-left: -15px;
+  align-items: center;
+  justify-content: center;
+}
+.swiper-tab-close-btn-default a {
+  padding: 5px 20px;
+  border-radius: 5px;
 }

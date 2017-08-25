@@ -19,20 +19,48 @@
 
 
 .swiper-tab-header {
+    position: relative;
     display: flex;
-    justify-content: space-around;
     border-bottom: 1px solid #ccc;
 
     .swiper-tab-item{
+        position: relative;
+        z-index: 1;
         flex: 1;
         text-align: center;
-        padding: 15px;
         background: #eee;
+        color: #676767;
+        min-height: 20px;
+        cursor: pointer;
+        background: linear-gradient(rgb(190, 190, 190), transparent, rgb(190, 190, 190));
+        transition: color 0.5s ease-in-out;
     }
 
-    .swiper-tab-item.swiper-tab-item-active {
-        background: #15A25D;
-        // visibility: visible
+    .swiper-tab-item::after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity .5s ease-in-out;
+        
+    }
+
+    .swiper-tab-item-inner {
+        padding: 10px;
+    }
+
+    .swiper-tab-item.swiper-tab-item-active{
+        color: #000;
+        &::after {
+            opacity: 1;
+            background: linear-gradient(#333, transparent, #333);
+            
+            // background: linear-gradient(rgb(73, 218, 186), transparent, rgb(73, 218, 186));
+        }
     }
 }
 
@@ -42,20 +70,45 @@
     .swiper-tab-item{
         padding: 15px;
         display: none;
-        border-left: 1px solid red;
         height: 450px;
-    }
-    .swiper-tab-item.swiper-tab-item-active {
-        display: block;
+        // transition: background 2s ease-in-out;
+        // background: linear-gradient(rgba(215, 228, 223, 0.73), rgba(198, 222, 219, 0.47),rgb(202, 228, 223));
     }
 
+    .swiper-tab-item.swiper-tab-item-active {
+        display: block;
+        // animation: bganimate 3s ease-in-out 1;
+        // background: red;
+        // background: radial-gradient(rgba(16, 85, 203, 0.73), rgba(13, 188, 182, 0.73));
+    }
+
+}
+
+.swiper-tab-line-wrapper {
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+
+    .swiper-tab-line-inner{
+        height: 3px;
+        position: relative;
+        background: #8ce5be;
+        display: flex;
+        justify-content: center;
+    }
+
+    .swiper-tab-line-inner em{
+        position: absolute;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #8ce5be;
+        bottom: 0;
+    }
 }
 
 .swiper-tab-wrapper.swiper-tab-animate {
     .swiper-tab-body {
         display: flex;
-        // transition: transform .5s ease-in-out;
-
         .swiper-tab-item {
             display: block;
             flex: 1;
@@ -64,20 +117,35 @@
 }
 
 .swiper-tab-close-btn{
+    cursor: pointer;
+    width: 100%;
     position: absolute;
     bottom: 20px;
-    border: 1px solid #14e432;
-    background: #fff;
+    display: flex;
+    justify-content: center;
+    a {
+        border: 1px solid #14e432;
+    }
+}
 
-    &.swiper-tab-close-btn-circle{
-        border-radius: 50px;
+&.swiper-tab-close-btn-circle{
+    a {
+        display: flex;
         width: 30px;
         height: 30px;
         text-align: center;
-        line-height: 30px;
-        font-size: 20px;
+        border-radius: 50px;
         color: #14e432;
-        left: 50%;
-        margin-left: -15px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+}
+
+&.swiper-tab-close-btn-default{ 
+    a {
+        padding: 5px 20px;
+        border-radius: 5px;
     }
 }
+
