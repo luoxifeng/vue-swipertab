@@ -33,7 +33,7 @@ export default {
             return style;
         },
         cursor(){
-            return is.str(this.$parent) || this.$parent.cursor;
+            return is.str(this.$parent.cursor) || this.$parent.cursor;
         }
     },
     methods: {

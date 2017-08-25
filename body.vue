@@ -92,7 +92,8 @@ export default {
             return Math.abs(touch.clientX - this.startX) > this.width*this.distance;
         },
         addEventListener(){//动画结束事件监听
-            this.$el.addEventListener("webkitTransitionEnd", () => {
+            this.$el.addEventListener("webkitTransitionEnd", (e) => {
+                e.stopPropagation();
                 console.log("----动画结束----")
                 this.$parent.bus.$emit("animated");
             })

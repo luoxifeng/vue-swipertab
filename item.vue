@@ -26,8 +26,11 @@ export default {
         
     },
     computed: {
+        // syncslide(){
+        //     return this.grandpa.syncslide;
+        // },   
         active(){
-            return this.grandpa.slideToIndex;
+            return this.grandpa.synctab ? this.grandpa.slideToIndex : this.grandpa.value;
         }
     },
     watch: {

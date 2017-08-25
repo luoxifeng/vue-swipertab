@@ -38,6 +38,10 @@ export default {
             type: Boolean,
             default: false
         },
+        synctab: {//tab切是否跟随内容滑动实时同步active
+            type: Boolean,
+            default: true
+        },
         animate: { //是否启动动画
             type: Boolean,
             default: false
@@ -104,16 +108,19 @@ export default {
     },
     methods: {
         initProcess(){
-             this.width = this.$el.clientWidth;
-             this.slideToIndex = this.value;
-             this.$children.forEach(child => this.grandchildren.push(...child.$children));
+            this.$el.style.opacity = 1;
+            this.width = this.$el.clientWidth;
+            this.slideToIndex = this.value;
+            this.$children.forEach(child => this.grandchildren.push(...child.$children));
         },
         initEvent(){
-            this.$el.addEventListener("webkitTransitionEnd", () => {
+            this.$el.addEventListener("webkitTransitionEnd", (e) => {
+                if(e.target !== this.$el) return;
                 if (this.show) {
                     console.log("open")
                     this.$emit("afterOpen");
                 } else {
+                    console.log("close")
                     this.$el.style.display = "none";
                     this.$emit("afterClose")
                 }
@@ -147,6 +154,8 @@ export default {
         this.$nextTick(() => {
             this.initProcess();
         })
+
+       
         
         this.initEvent();
     }
