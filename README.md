@@ -2,6 +2,51 @@
 基于Vue的，支滑动过渡的tab切组件
 
 # Usage
+demo.vue
+```
+<template>
+    <swiper-tab animate v-model="active">
+        <swiper-tab-header>
+            <swiper-tab-item>
+                tab1标题
+            </swiper-tab-item>
+            <swiper-tab-item>
+                tab2标题
+            </swiper-tab-item>
+            <swiper-tab-item>
+                tab3标题
+            </swiper-tab-item>
+        </swiper-tab-header>
+        <swiper-tab-body>
+            <swiper-tab-item>
+                tab1内容
+            </swiper-tab-item>
+            <swiper-tab-item>
+                tab2内容
+            </swiper-tab-item>
+            <swiper-tab-item>
+                tab3内容
+            </swiper-tab-item>
+        </swiper-tab-body>
+    <swiper-tab>
+</template>
+```
+```javascript
+import { SwiperTab, SwiperTabHeader, SwiperTabBody, SwiperTabItem } from "../components/swiper-tab"
+export {
+    data(){
+        return {
+           active: 1
+        }
+    },
+    components: {
+        SwiperTab, 
+        SwiperTabHeader, 
+        SwiperTabBody, 
+        SwiperTabItem
+    }
+}
+```
 
 # Settings
 
