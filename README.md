@@ -1,4 +1,5 @@
 # Vue-SwiperTab
+基于Vue的，支滑动过渡的tab切组件
 
 # Usage
 
