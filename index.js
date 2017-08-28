@@ -1,7 +1,7 @@
-import Tab from "./index.vue";
-import Header from "./header.vue";
-import Body from "./body.vue";
-import Item from "./item.vue";
+import Tab from "./src/index.vue";
+import Header from "./src/header.vue";
+import Body from "./src/body.vue";
+import Item from "./src/item.vue";
 
 export let SwiperTabHeader = Header
 export let SwiperTabBody = Body

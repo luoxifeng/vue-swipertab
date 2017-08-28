@@ -3,26 +3,41 @@
         :class="[(slidable || animate) ? 'swiper-tab-animate' : '', wrapperCls]">
         <div class="swiper-tab-inner" ref="slot">
             <slot></slot>
-            <div v-if="closeBtnText" :class="closeBtnCls">
-                <a @click="$emit('close')">{{closeBtnText}}</a>
-            <div>
+            <div class="swiper-tab-oper">
+                <div v-if="indicator" class="swiper-tab-indicator swiper-tab-oper-item">
+                    <div v-if="indicator" class="swiper-tab-indicator-inner">
+                        <a v-for="(text, ind) in indicatorText" :key="ind"
+                            :class="[ind === syncActive ? 'swiper-tab-indicator-active' : '']"
+                            :style="indicatorStyle"
+                            @click="clickSwitchTab(ind)">{{text}}</a>
+                    </div>
+                </div>
+                <div v-if="closeBtnText" :class="closeBtnCls" class="swiper-tab-oper-item">
+                    <a @click="$emit('close')">{{closeBtnText}}</a>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import Vue from "vue";
-import is from "./util";
+import is from "../util";
 
 export default {
     name: "SwiperTab",
     data(){
         return {
             bus: new Vue(),
-            grandchildren: [],
+            header: {},
+            body: {},
+            headerSons:[],
+            bodySons: [],
+            grandson: [],
             animating: false,
             width: 0,
             slideToIndex: 0,
+            indicatorText: []
         }
     },
     props: {
@@ -70,7 +85,14 @@ export default {
             type: Boolean,
             default: true
         },
-       
+        indicator: {
+            type: [Boolean, Array],
+            default: false,
+        },
+        indicatorClick: {
+            type: Boolean,
+            default: false,
+        }
     },
     computed: {
         closeBtnText(){
@@ -101,6 +123,16 @@ export default {
                 res = animate.trim() || res;
             }
             return res;
+        },
+        syncActive(){
+            return  this.synctab ? this.slideToIndex : this.value;
+        },
+        indicatorStyle(){
+            let style = {};
+            if (this.animateType) {
+                style["transition"] = `width ${this.speed}ms ${this.animateType}`;
+            }
+            return style;
         }
     },
     watch: {
@@ -128,7 +160,7 @@ export default {
             this.$el.style.opacity = 1;
             this.width = this.$el.clientWidth;
             this.slideToIndex = this.value;
-            this.$children.forEach(child => this.grandchildren.push(...child.$children));
+            this.indicatorText = is.arr(this.indicator) ? this.indicator : Array.from({length: this.headerSons.length}).map(t => "");
         },
         initEvent(){
             this.$el.addEventListener("webkitTransitionEnd", (e) => {
@@ -152,7 +184,7 @@ export default {
             });
         },
         switchTab(index){
-            if (index < 0 || index == this.grandchildren.length) return;
+            if (index < 0 || index == this.grandson.length) return;
             if (this.slidable) {
                 if (this.animating) return;
                 this.animating = true;
@@ -161,17 +193,49 @@ export default {
             console.log(`----切换到第${index}----`)
             this.$emit("input", index)
         },
-       
-        
+        initValidator(){//验证组件嵌套或者使用不正确的地方报错提示
+            //验证组件内部必须有且只能有一个header,以及body
+            let headers = this.$children.filter(t => t.$options.name === "SwiperTabHeader");
+            let bodys = this.$children.filter(t => t.$options.name === "SwiperTabBody");
+            if (headers.length != 1 || bodys.length != 1) 
+                throw new Error(`the SwiperTab must have and only one SwiperTabHeader or SwiperTabBody as child`);
+
+            this.header = headers[0];
+            this.body = bodys[0];
+            this.headerSons = this.header.$children;
+            this.bodySons = this.body.$children;
+            this.grandson = [...this.headerSons, ...this.bodySons];
+
+            //验证item的个数必须是偶数
+            if (this.grandson.length%2)
+                throw new Error("the count of component SwiperTabItem must be a even");
+
+            //验证header下面的item个数必须和body下面的item个数一致
+            if (this.headerSons.length != this.bodySons.length)
+                throw new Error("the count of component SwiperTabItem which belong to SwiperTabHeader ," +
+                    "must be equal the count of component SwiperTabItem which belong to SwiperTabBody")
+
+            //验证指示区域的个数是否等于tab的个数
+            if (Array.isArray(this.indicator) && this.indicator.length != this.headerSons.length)
+                throw new Error("the count of indicator must be equal the count of tab")
+
+        },
+        clickSwitchTab(index){
+            if (!this.indicatorClick) return;
+            if (this.value == index) return;
+            this.bus.$emit("switchTab", indexs);
+        }
     },
     created(){
         this.initBus();
     },
     mounted(){
+        this.initEvent();
         this.$nextTick(() => {
+            this.initValidator();
             this.initProcess();
         })
-        this.initEvent();
+        
     }
 }
 </script>

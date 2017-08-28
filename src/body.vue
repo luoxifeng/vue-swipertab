@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import is from "./util.js";
+import is from "../util";
 
 export default {
     name: "SwiperTabBody",
@@ -45,8 +45,11 @@ export default {
         slidable(){
             return this.$parent.slidable;
         },
-        index(){
+        currActive(){
             return this.$parent.value;
+        },
+        syncActive(){
+            return this.$parent.syncActive;
         },
         distance(){
             return this.$parent.distance;
@@ -57,15 +60,15 @@ export default {
             return res;
         },
         translateX(){
-            return `translateX(-${this.index*this.width}px)`;
+            return `translateX(-${this.currActive*this.width}px)`;
         },
         transition(){
             return `transform ${this.speed}ms ${this.animateType}`
         },
         isCanNotSwitch(){
             return [
-                [this.index <= 0 , this.direction == -1].every(t => t),
-                [this.index >= this.$children.length - 1 , this.direction == 1].every(t => t)
+                [this.currActive <= 0 , this.direction == -1].every(t => t),
+                [this.currActive >= this.$children.length - 1 , this.direction == 1].every(t => t)
             ].some(t => t);
         },
         bodyStyle(){
@@ -123,7 +126,7 @@ export default {
                 slow = 0.5;
             } else {
                 let next = this.isBeyondDistance(touch) ? this.direction : 0;
-                this.bus.$emit("slideToIndex", this.index + next)
+                this.bus.$emit("slideToIndex", this.currActive + next)
                 this.bus.$emit("slideBody", {
                     status: "move",
                     moveX: touch.clientX - this.startX
@@ -156,7 +159,7 @@ export default {
             
             style.transition = this.transition;
             if (switchTag) {
-                this.bus.$emit("switchTab", this.index + this.direction)
+                this.bus.$emit("switchTab", this.currActive + this.direction)
             } else { //不能划过去，需要恢复到原来位置
                 style.transform = this.translateX;
             }

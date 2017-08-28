@@ -26,10 +26,8 @@
   min-height: 20px;
   cursor: pointer;
   background: linear-gradient(#bebebe, transparent, #bebebe);
-  transition: color 0.5s ease-in-out;
 }
-.swiper-tab-header .swiper-tab-item::after {
-  content: "";
+.swiper-tab-header .swiper-tab-item-mask {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -37,7 +35,6 @@
   top: 0;
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out;
 }
 .swiper-tab-header .swiper-tab-item-inner {
   padding: 10px;
@@ -45,7 +42,7 @@
 .swiper-tab-header .swiper-tab-item.swiper-tab-item-active {
   color: #000;
 }
-.swiper-tab-header .swiper-tab-item.swiper-tab-item-active::after {
+.swiper-tab-header .swiper-tab-item.swiper-tab-item-active .swiper-tab-item-mask {
   opacity: 1;
   background: linear-gradient(#333, transparent, #333);
 }

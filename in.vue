@@ -8,6 +8,7 @@
             closebtn
             cursor
             wrapperCls="kkk"
+            indicator
             v-model="activeIndex">
             <swiper-tab-header>
                 <swiper-tab-item>
@@ -52,7 +53,8 @@ export default {
     data(){
         return {
             activeIndex: 1,
-            show: true
+            show: true,
+            indicator:[1,2]
         }
     },
     props: {

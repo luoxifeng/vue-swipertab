@@ -11,7 +11,7 @@
 
 <script>
 const preCls = "swiper-tab";
-import is from "./util.js";
+import is from "../util";
 export default {
     name: "SwiperTabHeader",
     data(){
@@ -34,8 +34,11 @@ export default {
         bus(){
             return this.$parent.bus;
         },
-        index(){
+        currActive(){
             return this.$parent.value;
+        },
+        syncActive(){
+            return this.$parent.syncActive;
         },
         cursor(){
             return is.str(this.$parent.cursor) || this.$parent.cursor;
@@ -58,13 +61,13 @@ export default {
                     style["transition"] = `transform ${this.speed}ms ${this.animateType}`;
                 }
             }
-            style["transform"] = `translateX(${this.index*this.childWidth + moveX}px)`;
+            style["transform"] = `translateX(${this.currActive*this.childWidth + moveX}px)`;
             return style;
         },
 
     },
     watch: {
-        index(){
+        currActive(){
             this.cursorMoveX = 0;
         }
     },

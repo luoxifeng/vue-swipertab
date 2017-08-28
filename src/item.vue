@@ -3,8 +3,10 @@
 
 <template>
     <div class="swiper-tab-item" 
-        :class="[index == active ? 'swiper-tab-item-active' : '']"
+        :class="[index == syncActive ? 'swiper-tab-item-active' : '']"
+        :style="itemStyle"
         @click="clickSwitchTab">
+        <div class="swiper-tab-item-mask" :style="maskStyle" ></div>
         <div class="swiper-tab-item-inner">
             <slot></slot>
         </div>
@@ -12,7 +14,7 @@
 </template>
 
 <script>
-import is from "./util";
+import is from "../util";
 
 export default {
     name: "SwiperTabItem",
@@ -28,8 +30,31 @@ export default {
         
     },
     computed: {
-        active(){
-            return  this.grandpa.synctab ? this.grandpa.slideToIndex : this.grandpa.value;
+        currActive(){
+            return this.$parent.currActive;
+        },
+        syncActive(){
+            return  this.$parent.syncActive;
+        },
+        animateType(){
+            return this.$parent.animateType;
+        },
+        speed(){
+            return this.$parent.speed;
+        },
+        maskStyle(){
+            let style = {};
+             if (this.animateType) {
+                style["transition"] = `opacity ${this.speed}ms ${this.animateType}`;
+            }
+            return style;
+        },
+        itemStyle(){
+            let style = {};
+             if (this.animateType) {
+                style["transition"] = `color ${this.speed}ms ${this.animateType}`;
+            }
+            return style;
         }
     },
     watch: {
