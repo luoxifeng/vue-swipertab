@@ -26,7 +26,6 @@ export default {
 
     },
     computed: {
-      
         direction(){//滑动方向 1向左，-1向右
             return this.tempX - this.startX > 0 ? -1 : 1;
         },
@@ -98,15 +97,13 @@ export default {
         addEventListener(){//动画结束事件监听
             this.$el.addEventListener("webkitTransitionEnd", (e) => {
                 e.stopPropagation();
-                console.log("----动画结束----")
-                this.$parent.bus.$emit("animated");
+                this.bus.$emit("animated");
             })
         },
         onSlideSatrt(e){
             if (!this.slidable) return;
             if (this.animating) return;
             this.startTime = e.timeStamp;
-            console.log("---滑动开始---")
             let touch = e.targetTouches[0];
             this.tempX = this.startX = touch.clientX;
             this.tempY = this.startY = touch.clientY;
@@ -118,8 +115,6 @@ export default {
             let style = this.$el.style;
             let touch = e.targetTouches[0];
             //从开始移动到现在移动的距离
-            // this.moveX = touch.clientX - this.startX;
-
             this.moveX = touch.clientX - this.tempX;//水平偏移量
             this.tempX = touch.clientX;
             if (this.isCanNotSwitch) {//到边界的时候，减速
@@ -139,7 +134,6 @@ export default {
         onSlideEnd(e){
             if (!this.slidable) return;
             if (this.animating) return;
-            console.log("---滑动结束---")
             this.bus.$emit("slideBody", {
                 status: "end",
             })

@@ -70,8 +70,7 @@ export default {
             if(["SwiperTabHeader", "SwiperTabBody"].includes(this.$parent.$options.name)) {
                 return true;
             }
-            console.error("the component SwiperTabItem must have a component SwiperTabHeader or SwiperTabBody as container");
-            return false;
+            throw new Error("the component SwiperTabItem must have a component SwiperTabHeader or SwiperTabBody as container");
         },
         buildRelation(){
             let parent = this.$parent;
@@ -83,16 +82,12 @@ export default {
             this.index = this.$parent.$children.length - 1;
         },
         clickSwitchTab(){
-            console.log("点击切换")
             if (this.parentName === "SwiperTabBody") return;
-            if (this.index == this.$parent.index) return;
-            console.log("点击切换")
+            if (this.index == this.currActive) return;
             this.bus.$emit("switchTab", this.index);
         }
     },
     mounted(){
-        
-        //  this.$on("switchTab", ()=> {console.log(222)})
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="swiper-tab-wrapper"
-        :class="[(slidable || animate) ? 'swiper-tab-animate' : '', wrapperCls]">
+        :class="[(slidable || animateType) ? 'swiper-tab-animate' : '', wrapperCls]">
         <div class="swiper-tab-inner" ref="slot">
             <slot></slot>
             <div class="swiper-tab-oper">
@@ -37,7 +37,8 @@ export default {
             animating: false,
             width: 0,
             slideToIndex: 0,
-            indicatorText: []
+            indicatorText: [],
+            prevActive: 0
         }
     },
     props: {
@@ -136,7 +137,8 @@ export default {
         }
     },
     watch: {
-        value(newVal){
+        value(newVal, oldVal){
+            this.prevActive = oldVal;
             this.slideToIndex = newVal;
         },
         show(newVal, oldVal){
@@ -157,6 +159,7 @@ export default {
     },
     methods: {
         initProcess(){
+            this.prevActive = this.value;
             this.$el.style.opacity = 1;
             this.width = this.$el.clientWidth;
             this.slideToIndex = this.value;
@@ -166,10 +169,8 @@ export default {
             this.$el.addEventListener("webkitTransitionEnd", (e) => {
                 if(e.target !== this.$el) return;
                 if (this.show) {
-                    console.log("open")
                     this.$emit("afterOpen");
                 } else {
-                    console.log("close")
                     this.$el.style.display = "none";
                     this.$emit("afterClose")
                 }
@@ -178,9 +179,22 @@ export default {
         initBus(){ //初始化中间联系的纽带
             let { bus } = this;
             bus.$on("switchTab", this.switchTab.bind(this));
-            bus.$on("animated", () => {this.animating = false});
+            bus.$on("animated", () => {
+                this.animating = false
+                this.$emit("afterSwitch", {
+                    curr: this.value,
+                    prev: this.prevActive
+                })
+            });
             bus.$on("slideToIndex", (index) => {
-                if(this.slideToIndex != index) this.slideToIndex = index;
+                if(this.slideToIndex != index) {
+                    this.$emit("beyondDistance", {
+                        curr: this.value,
+                        next: index
+                    });
+                    this.slideToIndex = index;
+                }
+                    
             });
         },
         switchTab(index){
@@ -189,8 +203,10 @@ export default {
                 if (this.animating) return;
                 this.animating = true;
             }
-            
-            console.log(`----切换到第${index}----`)
+            this.$emit("beforeSwitch", {
+                curr: this.value,
+                next: index
+            })
             this.$emit("input", index)
         },
         initValidator(){//验证组件嵌套或者使用不正确的地方报错提示
