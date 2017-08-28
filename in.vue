@@ -5,7 +5,6 @@
             :show="show" 
             @close="dd" 
             animate
-            :synctab="!1"
             closebtn
             cursor
             wrapperCls="kkk"

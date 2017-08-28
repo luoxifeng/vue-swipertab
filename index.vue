@@ -43,7 +43,7 @@ export default {
             default: true
         },
         animate: { //是否启动动画
-            type: Boolean,
+            type: [Boolean, String],
             default: false
         },
         value: { //当前选中的
@@ -65,7 +65,12 @@ export default {
         cursor: {
             type: [Boolean, String],
             default: false
-        }
+        },
+        synccursor: {
+            type: Boolean,
+            default: true
+        },
+       
     },
     computed: {
         closeBtnText(){
@@ -87,23 +92,35 @@ export default {
             }
             return cls;
         },
+        animateType(){
+            let { animate } = this;
+            let res = "ease-in-out";
+            if (animate === false) {
+                res = "";
+            } else if (is.str(animate)){
+                res = animate.trim() || res;
+            }
+            return res;
+        }
     },
     watch: {
         value(newVal){
             this.slideToIndex = newVal;
         },
         show(newVal, oldVal){
-            if(!this.animate) {
-                return this.$el.style.display = newVal ? "block" : "none";
+            let { style } = this.$el;
+            if(!this.animateType) {
+                return style.display = newVal ? "block" : "none";
             }
             if(newVal) {
-                this.$el.style.display = "";
+                style.display = "";
                 this.$nextTick(() => {
-                    this.$el.style.opacity = 1
+                    style.opacity = 1;
                 })
             } else {
-                this.$el.style.opacity = 0
+                style.opacity = 0;
             }
+            style["transition"] = `opacity ${this.speed}ms ${this.animateType}`
         }
     },
     methods: {
@@ -154,9 +171,6 @@ export default {
         this.$nextTick(() => {
             this.initProcess();
         })
-
-       
-        
         this.initEvent();
     }
 }

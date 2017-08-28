@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import is from "./util";
+
 export default {
     name: "SwiperTabItem",
     data(){
@@ -26,11 +28,8 @@ export default {
         
     },
     computed: {
-        // syncslide(){
-        //     return this.grandpa.syncslide;
-        // },   
         active(){
-            return this.grandpa.synctab ? this.grandpa.slideToIndex : this.grandpa.value;
+            return  this.grandpa.synctab ? this.grandpa.slideToIndex : this.grandpa.value;
         }
     },
     watch: {

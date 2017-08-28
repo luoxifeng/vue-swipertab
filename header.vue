@@ -16,24 +16,56 @@ export default {
     name: "SwiperTabHeader",
     data(){
         return {
-            childWidth: 0
+            childWidth: 0,
+            cursorMoveX: 0,
+            slideStatus: "none",
         }
     },
     props: {
 
     },
     computed: {
+        distance(){
+            return this.$parent.distance;
+        },
+        width(){
+            return this.$parent.width;
+        },
+        bus(){
+            return this.$parent.bus;
+        },
         index(){
             return this.$parent.value;
         },
-        lineStyle(){
-            let style = {};
-            style["width"] = `${this.childWidth}px`;
-            style["transform"] = `translateX(${this.index*this.childWidth}px)`;
-            return style;
-        },
         cursor(){
             return is.str(this.$parent.cursor) || this.$parent.cursor;
+        },
+        synccursor(){
+            return this.$parent.synccursor;
+        },
+        speed(){
+            return this.$parent.speed;
+        },
+        animateType(){
+            return this.$parent.animateType;
+        },
+        lineStyle(){
+            let style = {"width": `${this.childWidth}px`};
+            let moveX = this.synccursor ? this.cursorMoveX : 0;
+            if (this.slideStatus === "end") {
+                moveX = 0;
+                if(this.animateType) {
+                    style["transition"] = `transform ${this.speed}ms ${this.animateType}`;
+                }
+            }
+            style["transform"] = `translateX(${this.index*this.childWidth + moveX}px)`;
+            return style;
+        },
+
+    },
+    watch: {
+        index(){
+            this.cursorMoveX = 0;
         }
     },
     methods: {
@@ -47,12 +79,19 @@ export default {
                 style[type == "line" ? "background" : "border-bottom-color"] = cursor.trim()
             }
             return style;
+        },
+        initBus(){
+            this.bus.$on("slideBody", playload => {
+                if((this.slideStatus = playload.status) === "move") {
+                    this.cursorMoveX = -playload.moveX*this.childWidth/this.width;
+                    this.slideStatus = playload.status;
+                }
+            })
         }
     },
     mounted(){
-        // this.setTabActive(this.$parent.value);
+        this.initBus();
         this.childWidth = this.$children[0].$el.clientWidth;
-
         
     }
 }

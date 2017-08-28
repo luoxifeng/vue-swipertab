@@ -7,15 +7,6 @@
   min-height: 50px;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 3s ease-in-out;
-}
-@keyframes d {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 .swiper-tab-inner {
   position: relative;

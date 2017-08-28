@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import is from "./util.js";
+
 export default {
     name: "SwiperTabBody",
     data(){
@@ -17,6 +19,7 @@ export default {
             startY: 0,
             tempX: 0,
             tempY: 0,
+            moveX: 0
         }
     },
     props: {
@@ -48,14 +51,16 @@ export default {
         distance(){
             return this.$parent.distance;
         },
-        animate(){
-            return this.$parent.animate;
+        animateType(){
+            let res = this.$parent.animateType;
+            if (this.slidable) res = res || "ease-in-out";
+            return res;
         },
         translateX(){
             return `translateX(-${this.index*this.width}px)`;
         },
         transition(){
-            return `transform ${this.speed}ms ease-in-out`
+            return `transform ${this.speed}ms ${this.animateType}`
         },
         isCanNotSwitch(){
             return [
@@ -67,8 +72,9 @@ export default {
             let style = {},
                 parent = this.$parent,
                 count = this.$children.length || 1;
-            if (this.slidable || this.animate) {
-                style["width"] = `${this.width*count}px`;
+
+            style["width"] = `${this.width*count}px`;
+            if (this.animateType) {
                 style["transform"] = this.translateX;
                 style["transition"] = this.transition;
             }
@@ -82,11 +88,6 @@ export default {
        
     },
     methods: {
-        isVerticalSlide(touch){//判断是不是竖直方向滑动
-            let offsetX = touch.clientX - this.startX;
-            let offsetY = touch.clientY - this.startY;
-            return Math.abs(offsetY) > Math.abs(offsetX);//竖直方向
-        },  
         isBeyondDistance(touch){//超过自动滑动距离的时候，tab要变化active
             touch = touch || {clientX: this.tempx};
             return Math.abs(touch.clientX - this.startX) > this.width*this.distance;
@@ -113,22 +114,32 @@ export default {
             let slow = 1;
             let style = this.$el.style;
             let touch = e.targetTouches[0];
-            let offset = touch.clientX - this.tempX;//水平偏移量
+            //从开始移动到现在移动的距离
+            // this.moveX = touch.clientX - this.startX;
+
+            this.moveX = touch.clientX - this.tempX;//水平偏移量
             this.tempX = touch.clientX;
-            if (this.isCanNotSwitch) {//到边界的时候，减速c
+            if (this.isCanNotSwitch) {//到边界的时候，减速
                 slow = 0.5;
             } else {
                 let next = this.isBeyondDistance(touch) ? this.direction : 0;
                 this.bus.$emit("slideToIndex", this.index + next)
+                this.bus.$emit("slideBody", {
+                    status: "move",
+                    moveX: touch.clientX - this.startX
+                })
             }
             /translateX\((.+?)px\)/.test(this.$el.style.transform);
-            style.transform = `translateX(${+RegExp.$1 + offset*slow}px)`;
+            style.transform = `translateX(${+RegExp.$1 + this.moveX*slow}px)`;
             style.transition = '';
         },
         onSlideEnd(e){
             if (!this.slidable) return;
             if (this.animating) return;
             console.log("---滑动结束---")
+            this.bus.$emit("slideBody", {
+                status: "end",
+            })
             let switchTag = false;//默认不滑动
             let style = this.$el.style;
             let touch = e.changedTouches[0];
