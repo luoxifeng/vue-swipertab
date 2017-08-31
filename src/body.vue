@@ -118,7 +118,6 @@ export default {
             let offsetY = touch.clientY - this.startY;
             if (Math.abs(offsetY) > Math.abs(offsetX)) return;//竖直方向
 
-
             //从开始移动到现在移动的距离
             this.moveX = touch.clientX - this.tempX;//水平偏移量
             this.tempX = touch.clientX;
@@ -146,8 +145,6 @@ export default {
             let style = this.$el.style;
             let touch = e.changedTouches[0];
             let offsetX = touch.clientX - this.startX;
-            // let offsetY = touch.clientY - this.startY;
-            // if (Math.abs(offsetY) > Math.abs(offsetX)) return;//竖直方向
             if (this.isCanNotSwitch) {
                 switchTag = false;
             } else if (Math.abs(offsetX/this.width) >= this.distance) {//水平滑动超过一定位置

@@ -1,14 +1,16 @@
 <template>
     <div>
-        <swiper-tab slidable 
+        <swiper-tab 
+            
             :distance="0.5" 
             :show="show" 
             @close="dd" 
-            animate
+            
             closebtn
             cursor
             wrapperCls="kkk"
             :indicator="indicator"
+            indicatorClick
             v-model="activeIndex">
             <swiper-tab-header>
                 <swiper-tab-item>
@@ -40,7 +42,7 @@
             </swiper-tab-body> 
         </swiper-tab>
         
-        <div @click="dd">dsgffdhgfdjhgfjfh</div>
+        <div @click="dd">open</div>
      
     </div>
 </template>

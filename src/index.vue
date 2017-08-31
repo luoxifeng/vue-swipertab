@@ -241,7 +241,7 @@ export default {
         clickSwitchTab(index){
             if (!this.indicatorClick) return;
             if (this.value == index) return;
-            this.bus.$emit("switchTab", indexs);
+            this.bus.$emit("switchTab", index);
         },
         indicatorClass(index){
             let clses = [];

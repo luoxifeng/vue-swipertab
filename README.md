@@ -1,6 +1,13 @@
 # Vue-SwiperTab
 基于Vue的，支滑动过渡的tab切组件
 
+# Screenshots
+1. slidable (支持滑动，过渡，支持滑到一定位置，大于一定速度时自动滑动到下一项)
+    ![slidable](./imgs/slidable.gif)
+1. disable slide (禁止滑动以及动画过渡，简单的用法就是显示隐藏)
+    ![disable slide](./imgs/dis-slide.gif)
+
+
 # Usage
 demo.vue
 ```
