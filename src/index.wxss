@@ -105,14 +105,32 @@
   display: flex;
   justify-content: space-around;
 }
-.swiper-tab-indicator a {
+.swiper-tab-indicator .swiper-tab-indicator-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+}
+.swiper-tab-indicator .swiper-tab-indicator-item-default {
   height: 8px;
   width: 8px;
   border-radius: 10px;
   background: #8ce5be;
 }
-.swiper-tab-indicator a.swiper-tab-indicator-active {
+.swiper-tab-indicator .swiper-tab-indicator-item-default.swiper-tab-indicator-active {
   width: 16px;
+}
+.swiper-tab-indicator .swiper-tab-indicator-item-other {
+  transform: scale(0.8);
+  height: 20px;
+  width: 20px;
+  border-radius: 100px;
+  border: 1px solid #8ce5be;
+}
+.swiper-tab-indicator .swiper-tab-indicator-item-other.swiper-tab-indicator-active {
+  width: 30px;
+  background: #8ce5be;
+  color: #fff;
 }
 .swiper-tab-oper {
   width: 100%;

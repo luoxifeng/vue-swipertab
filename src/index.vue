@@ -7,7 +7,8 @@
                 <div v-if="indicator" class="swiper-tab-indicator swiper-tab-oper-item">
                     <div v-if="indicator" class="swiper-tab-indicator-inner">
                         <a v-for="(text, ind) in indicatorText" :key="ind"
-                            :class="[ind === syncActive ? 'swiper-tab-indicator-active' : '']"
+                            class="swiper-tab-indicator-item"
+                            :class="indicatorClass(ind)"
                             :style="indicatorStyle"
                             @click="clickSwitchTab(ind)">{{text}}</a>
                     </div>
@@ -134,7 +135,8 @@ export default {
                 style["transition"] = `width ${this.speed}ms ${this.animateType}`;
             }
             return style;
-        }
+        },
+        
     },
     watch: {
         value(newVal, oldVal){
@@ -240,6 +242,12 @@ export default {
             if (!this.indicatorClick) return;
             if (this.value == index) return;
             this.bus.$emit("switchTab", indexs);
+        },
+        indicatorClass(index){
+            let clses = [];
+            clses.push(`swiper-tab-indicator-item-${is.arr(this.indicator) ? 'other' : 'default'}`);
+            clses.push(index === this.syncActive ? 'swiper-tab-indicator-active' : '' );
+            return clses;
         }
     },
     created(){
