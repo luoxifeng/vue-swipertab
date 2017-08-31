@@ -73,7 +73,10 @@ export default {
         },
         distance: {
             type: [String, Number],
-            default: 0.5
+            default: 0.5,
+            validator(val){
+                return val > 0 && val < 1;
+            }
         },
         closebtn: {
             type: [Boolean, String],
