@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import is from "../util";
+import { is } from "../util";
 
 export default {
     name: "SwiperTabItem",

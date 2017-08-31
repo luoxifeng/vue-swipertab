@@ -11,7 +11,7 @@
 
 <script>
 const preCls = "swiper-tab";
-import is from "../util";
+import { is } from "../util";
 export default {
     name: "SwiperTabHeader",
     data(){

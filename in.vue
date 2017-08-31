@@ -1,11 +1,11 @@
 <template>
     <div>
         <swiper-tab 
-            
+            slidable
+            animate
             :distance="0.5" 
             :show="show" 
-            @close="dd" 
-            
+            @close="close" 
             closebtn
             cursor
             wrapperCls="kkk"
@@ -42,7 +42,7 @@
             </swiper-tab-body> 
         </swiper-tab>
         
-        <div @click="dd">open</div>
+        <div @click="close">open</div>
      
     </div>
 </template>
@@ -63,7 +63,7 @@ export default {
         
     },
     methods: {
-        dd(){
+        close(){
             this.show = !this.show;
         }
     },

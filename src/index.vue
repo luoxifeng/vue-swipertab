@@ -23,13 +23,13 @@
 
 <script>
 import Vue from "vue";
-import is from "../util";
+import { is, EventEmitter } from "../util";
 
 export default {
     name: "SwiperTab",
     data(){
         return {
-            bus: new Vue(),
+            bus: new EventEmitter(),
             header: {},
             body: {},
             headerSons:[],
