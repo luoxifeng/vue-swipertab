@@ -5,7 +5,8 @@
     <div class="swiper-tab-item" 
         :class="[index == syncActive ? 'swiper-tab-item-active' : '']"
         :style="itemStyle"
-        @click="clickSwitchTab">
+        @mouseover="switchTab('hover')"
+        @click="switchTab('click')">
         <div class="swiper-tab-item-mask" :style="maskStyle" ></div>
         <div class="swiper-tab-item-inner">
             <slot></slot>
@@ -41,6 +42,9 @@ export default {
         },
         speed(){
             return this.$parent.speed;
+        },
+        hoverSwitch(){
+            return this.$parent.hoverSwitch;
         },
         maskStyle(){
             let style = {};
@@ -81,8 +85,10 @@ export default {
         setItemIndex(){
             this.index = this.$parent.$children.length - 1;
         },
-        clickSwitchTab(){
+        switchTab(type){
             if (this.parentName === "SwiperTabBody") return;
+            if (this.hoverSwitch && type != "hover") return;
+            if (!this.hoverSwitch && type == "hover") return;
             if (this.index == this.currActive) return;
             this.bus.$emit("switchTab", this.index);
         }

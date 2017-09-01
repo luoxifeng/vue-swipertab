@@ -10,7 +10,8 @@
                             class="swiper-tab-indicator-item"
                             :class="indicatorClass(ind)"
                             :style="indicatorStyle"
-                            @click="clickSwitchTab(ind)">{{text}}</a>
+                            @mouseenter="indicatorSwitchTab('hover', ind)"
+                            @click="indicatorSwitchTab('click', ind)">{{text}}</a>
                     </div>
                 </div>
                 <div v-if="closeBtnText" :class="closeBtnCls" class="swiper-tab-oper-item">
@@ -94,7 +95,11 @@ export default {
             type: [Boolean, Array],
             default: false,
         },
-        indicatorClick: {
+        indicatorSwitch: {
+            type: Boolean,
+            default: false,
+        },
+        hoverSwitch: {
             type: Boolean,
             default: false,
         }
@@ -241,8 +246,10 @@ export default {
                 throw new Error("the count of indicator must be equal the count of tab")
 
         },
-        clickSwitchTab(index){
-            if (!this.indicatorClick) return;
+        indicatorSwitchTab(type, index){
+            if (!this.indicatorSwitch) return;
+            if (this.hoverSwitch && type != "hover") return;
+            if (!this.hoverSwitch && type == "hover") return;
             if (this.value == index) return;
             this.bus.$emit("switchTab", index);
         },

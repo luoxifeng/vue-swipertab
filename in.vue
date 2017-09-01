@@ -8,9 +8,10 @@
             @close="close" 
             closebtn
             cursor
+            hoverSwitch
             wrapperCls="kkk"
             :indicator="indicator"
-            indicatorClick
+            indicatorSwitch
             v-model="activeIndex">
             <swiper-tab-header>
                 <swiper-tab-item>

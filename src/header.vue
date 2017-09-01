@@ -52,6 +52,9 @@ export default {
         animateType(){
             return this.$parent.animateType;
         },
+        hoverSwitch(){
+            return this.$parent.hoverSwitch;
+        },
         lineStyle(){
             let style = {"width": `${this.childWidth}px`};
             let moveX = this.synccursor ? this.cursorMoveX : 0;

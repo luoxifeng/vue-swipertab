@@ -71,5 +71,8 @@ export {
 `closebtn` | 显示关闭按钮 | `Boolean`, `String` | `true`,`false`,`字符串` | `false` |  `无` | `无` | 设置为布尔值的时候，或者经过trim以后为空的字符串，使用默认样式`x`的圆形关闭按钮；设置为非空字符串，展示一个长方形的带传入文案的按钮
 `cursor` | 启用header区域游标 | `Boolean`, `String` | `true`,`false`,`可以表示颜色值字符串` |  `false` |`无` | `synccursor` | 当设置为布尔值`true`和`空字符串`的时候，启动默认样式的游标；设置为表示`颜色值`的字符串`（如 red,#eee, rgba, rgb等）`，则游标的颜色为设置的颜色, 若想更大程度的自定义，组件内部样式，可设置`wrapperCls`属性，进行自定义样式设置,同时这个属性和`slidable`影响`synccursor`属性，因为只有启动了游标，才可以设置同步移动的游标，不过默认游标就是同步的，如果不禁用同步移动,`synccursor`就可以不用设置了
 `synccursor` | 同步移动的游标 | `Boolean` | `true`,`false`|  `true` | `slidable, cursor` | `无` | 使用这个属性可以在滑动的时候，游标也跟着移动，效果同`synctab`,就是在滑动到设置的`distance`边界位置时，游标的中心会指向下一个tab，本属性依赖`slidable`（可滑动属性），同时也依赖`cursor`（启动游标的属性）
+`indicator` | 启动位置指示器 | `Boolean,Array` | `true`,`false`, `[]`|  `false` | `无` | `无` | 此属性用来设置指示器，当设置为`true`时，使用默认样式，当设置我一个数组时，数组里面的文案会呈现出来
+`indicatorSwitch` | 指示器操作切换 | `Boolean` | `true`,`false`|  `false` | `indicator`，`hoverSwitch` | `无` | 首先设置 `indicator` ，启动了指示器。此属性用来设置指示器的每一项是否可以通过点击或者hover来切换tab，当设置为`true`时，默认是通过点击来切换，但是当设置了`hoverSwitch`后变成hover切换，但是这种情况只适用于pc端，手机端没有鼠标事件,所以在手机端会退回到点击模式
+`hoverSwitch` | hover操作切换 | `Boolean` | `true`,`false`|  `false` | `indicatorSwitch` | `无` | 设置了此属性后原本点击header区域的tab切换变成了hover切换，`indicatorSwitch`属性设置的点击指示器切换也变成了hover切换，此属性只在pc上有效果，原因是手机端没有鼠标事件，在手机上使用此属性，会被忽略，退回到点击切换
 
 
