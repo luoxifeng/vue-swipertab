@@ -258,7 +258,7 @@ export default {
             clses.push(`swiper-tab-indicator-item-${is.arr(this.indicator) ? 'other' : 'default'}`);
             clses.push(index === this.syncActive ? 'swiper-tab-indicator-active' : '' );
             return clses;
-        }
+        },
     },
     created(){
         this.initBus();
@@ -269,7 +269,6 @@ export default {
             this.initValidator();
             this.initProcess();
         })
-        
     }
 }
 </script>
