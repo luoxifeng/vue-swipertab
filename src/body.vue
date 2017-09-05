@@ -22,9 +22,7 @@ export default {
             moveX: 0
         }
     },
-    props: {
-
-    },
+    props: {},
     computed: {
         direction(){//滑动方向 1向左，-1向右
             return this.tempX - this.startX > 0 ? -1 : 1;
@@ -86,9 +84,7 @@ export default {
             return this.width/1000;
         }
     },
-    watch: {
-       
-    },
+    watch: {},
     methods: {
         isBeyondDistance(touch){//超过自动滑动距离的时候，tab要变化active
             touch = touch || {clientX: this.tempx};
