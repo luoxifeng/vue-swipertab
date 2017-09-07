@@ -170,7 +170,9 @@ export default {
     methods: {
         initProcess(){
             this.prevActive = this.value;
-            this.$el.style.opacity = 1;
+            if (this.show) {
+                setTimeout(() => this.$el.style.opacity = 1);
+            }
             this.width = this.$el.clientWidth;
             this.slideToIndex = this.value;
             this.indicatorText = is.arr(this.indicator) ? this.indicator : Array.from({length: this.headerSons.length}).map(t => "");
@@ -223,30 +225,35 @@ export default {
             //验证组件内部必须有且只能有一个header,以及body
             let headers = this.$children.filter(t => t.$options.name === "SwiperTabHeader");
             let bodys = this.$children.filter(t => t.$options.name === "SwiperTabBody");
-            if (headers.length != 1 || bodys.length != 1) 
+            if (!headers.length && !bodys.length) 
                 throw new Error(`the SwiperTab must have and only one SwiperTabHeader or SwiperTabBody as child`);
 
             this.header = headers[0];
             this.body = bodys[0];
-            this.headerSons = this.header.$children;
-            this.bodySons = this.body.$children;
+            this.headerSons = [];
+            if (this.header) this.headerSons = this.header.$children;
+            if (this.body) this.bodySons = this.body.$children;
             this.grandson = [...this.headerSons, ...this.bodySons];
 
-            //验证item的个数必须是偶数
-            if (this.grandson.length%2)
-                throw new Error("the count of component SwiperTabItem must be a even");
-
             //验证header下面的item个数必须和body下面的item个数一致
-            if (this.headerSons.length != this.bodySons.length)
+            if (this.header && this.body && this.headerSons.length != this.bodySons.length)
                 throw new Error("the count of component SwiperTabItem which belong to SwiperTabHeader ," +
                     "must be equal the count of component SwiperTabItem which belong to SwiperTabBody")
 
             //验证指示区域的个数是否等于tab的个数
-            if (Array.isArray(this.indicator) && this.indicator.length != this.headerSons.length)
-                throw new Error("the count of indicator must be equal the count of tab")
+            if (Array.isArray(this.indicator)) {
+                if (this.header && this.headerSons.length != this.indicator.length) {
+                    throw new Error("the count of indicator must be equal the count of tab")
+                }
+                if (this.body && this.bodySons.length != this.indicator.length) {
+                    throw new Error("the count of indicator must be equal the count of tab content")
+                }
+            }
+                
 
         },
         indicatorSwitchTab(type, index){
+            console.log(type, 12)
             if (!this.indicatorSwitch) return;
             if (this.hoverSwitch && type != "hover") return;
             if (!this.hoverSwitch && type == "hover") return;
@@ -259,6 +266,8 @@ export default {
             clses.push(index === this.syncActive ? 'swiper-tab-indicator-active' : '' );
             return clses;
         },
+      
+        
     },
     created(){
         this.initBus();

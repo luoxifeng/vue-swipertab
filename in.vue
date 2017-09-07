@@ -8,7 +8,6 @@
             @close="close" 
             closebtn
             cursor
-            hoverSwitch
             wrapperCls="kkk"
             :indicator="indicator"
             indicatorSwitch
