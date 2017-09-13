@@ -6,9 +6,13 @@
         :class="[index == syncActive ? 'swiper-tab-item-active' : '']"
         :style="itemStyle"
         @mouseover="switchTab('hover')"
-        @click="switchTab('click')">
+        @click="switchTab('click')"
+        >
         <div class="swiper-tab-item-mask" :style="maskStyle" ></div>
-        <div class="swiper-tab-item-inner">
+        <div class="swiper-tab-item-inner" 
+            @touchstart="touchstart"
+            @touchmove="touchmove"
+            @touchend="touchend">
             <slot></slot>
         </div>
     </div>
@@ -24,7 +28,10 @@ export default {
             bus: {},
             grandpa: {},//祖先
             index: 0,
-            parentName: ""
+            parentName: "",
+            startX: 0,
+            startY: 0,
+            direction: ""
         }
     },
     props: {
@@ -91,7 +98,52 @@ export default {
             if (!this.hoverSwitch && type == "hover") return;
             if (this.index == this.currActive) return;
             this.bus.$emit("switchTab", this.index);
-        }
+        },
+        touchstart(event){
+            if (this.parentName === "SwiperTabHeader") return;
+            let touch = event.touches[0] || event;
+            let target = event.currentTarget;
+            this.startX = touch.clientX;
+            this.startY = touch.clientY;
+            this.tempX = touch.clientX;
+            this.tempY = touch.clientY;
+            this.maxScroll = target.scrollHeight - target.clientHeight;
+        },
+        touchmove(event){
+            if (this.parentName === "SwiperTabHeader") return;
+            let touch = event.touches[0] || event;
+            if (!this.direction) {
+                if(Math.abs(touch.clientX - this.startX) > Math.abs(touch.clientY - this.startY)) {
+                    this.$parent.itemDirection = this.direction = "horizontal";
+                } else {
+                    this.$parent.itemDirection = this.direction = "vertical";
+                }
+            }
+
+            //水平方向
+            if (this.direction == "horizontal") {
+                event.preventDefault();
+                return;
+            }
+           
+            //垂直方向
+            let target = event.currentTarget
+            let offsetX = touch.clientX - this.tempX;
+            this.tempX = touch.clientX
+            event.stopPropagation();
+            if (offsetX > 0 && target.scrollTop == 0) {//上边缘
+                event.preventDefault()
+            } else if (offsetX < 0 && (target.scrollTop + 1 >= this.maxScroll)){//下边缘
+                event.preventDefault()
+                console.log(2222)
+            }
+            
+        },
+        touchend(){
+            if (this.parentName === "SwiperTabHeader") return;
+            this.direction = "";
+        },
+
     },
     mounted(){
     }

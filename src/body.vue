@@ -19,7 +19,8 @@ export default {
             startY: 0,
             tempX: 0,
             tempY: 0,
-            moveX: 0
+            moveX: 0,
+            itemDirection: ""
         }
     },
     props: {},
@@ -97,6 +98,7 @@ export default {
             })
         },
         onSlideSatrt(e){
+            if (this.itemDirection == "vertical") return;
             if (!this.slidable) return;
             if (this.animating) return;
             this.startTime = e.timeStamp;
@@ -105,6 +107,7 @@ export default {
             this.tempY = this.startY = touch.clientY;
         },
         onSlideMove(e){
+            if (this.itemDirection == "vertical") return;
             if (!this.slidable) return;
             if (this.animating) return;
             let slow = 1;
@@ -132,6 +135,7 @@ export default {
             style.transition = '';
         },
         onSlideEnd(e){
+            if (this.itemDirection == "vertical") return;
             if (!this.slidable) return;
             if (this.animating) return;
             // this.bus.$emit("slideBody", {
