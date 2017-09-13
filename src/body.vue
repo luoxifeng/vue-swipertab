@@ -26,6 +26,7 @@ export default {
     props: {},
     computed: {
         direction(){//滑动方向 1向左，-1向右
+            if(this.tempX - this.startX == 0) return 0;//滑动过快
             return this.tempX - this.startX > 0 ? -1 : 1;
         },
         animating(){
@@ -125,22 +126,17 @@ export default {
             } else {
                 let next = this.isBeyondDistance(touch) ? this.direction : 0;
                 this.bus.$emit("slideToIndex", this.currActive + next)
-                // this.bus.$emit("slideBody", {
-                //     status: "move",
-                //     moveX: touch.clientX - this.startX
-                // })
             }
             /translateX\((.+?)px\)/.test(this.$el.style.transform);
             style.transform = `translateX(${+RegExp.$1 + this.moveX*slow}px)`;
             style.transition = '';
         },
         onSlideEnd(e){
+            if (!this.direction) return;
             if (this.itemDirection == "vertical") return;
             if (!this.slidable) return;
             if (this.animating) return;
-            // this.bus.$emit("slideBody", {
-            //     status: "end",
-            // })
+            
             let switchTag = false;//默认不滑动
             let style = this.$el.style;
             let touch = e.changedTouches[0];
