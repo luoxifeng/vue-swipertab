@@ -120,7 +120,7 @@ export default {
 <style lang="less">
 .swiper-tab-body{
     .swiper-tab-item-inner{
-        height: 500px;
+        height: 400px;
         overflow-y: scroll;
     }
 }

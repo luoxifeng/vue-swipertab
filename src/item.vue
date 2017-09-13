@@ -119,7 +119,7 @@ export default {
                     this.$parent.itemDirection = this.direction = "vertical";
                 }
             }
-
+            // alert(this.direction)
             //水平方向
             if (this.direction == "horizontal") {
                 event.preventDefault();
@@ -128,22 +128,19 @@ export default {
            
             //垂直方向
             let target = event.currentTarget
-            let offsetX = touch.clientX - this.tempX;
-            this.tempX = touch.clientX
+            let offsetY = touch.clientY - this.tempY;
+            this.tempY = touch.clientY
             event.stopPropagation();
-            if (offsetX > 0 && target.scrollTop == 0) {//上边缘
+            if (offsetY > 0 && target.scrollTop == 0) {//上边缘
                 event.preventDefault()
-            } else if (offsetX < 0 && (target.scrollTop + 1 >= this.maxScroll)){//下边缘
+            } else if (offsetY < 0 && (target.scrollTop + 1 >= this.maxScroll)){//下边缘
                 event.preventDefault()
-                console.log(2222)
             }
-            
         },
         touchend(){
             if (this.parentName === "SwiperTabHeader") return;
             this.direction = "";
         },
-
     },
     mounted(){
     }
