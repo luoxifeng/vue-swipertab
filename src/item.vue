@@ -31,7 +31,9 @@ export default {
             parentName: "",
             startX: 0,
             startY: 0,
-            direction: ""
+            direction: "",
+            tempX: 0,
+            tempY: 0
         }
     },
     props: {
@@ -117,9 +119,9 @@ export default {
                     this.$parent.itemDirection = this.direction = "horizontal";
                 } else {
                     this.$parent.itemDirection = this.direction = "vertical";
+                    // event.stopPropagation();
                 }
             }
-            // alert(this.direction)
             //水平方向
             if (this.direction == "horizontal") {
                 event.preventDefault();
@@ -130,7 +132,7 @@ export default {
             let target = event.currentTarget
             let offsetY = touch.clientY - this.tempY;
             this.tempY = touch.clientY
-            event.stopPropagation();
+            // event.stopPropagation();
             if (offsetY > 0 && target.scrollTop == 0) {//上边缘
                 event.preventDefault()
             } else if (offsetY < 0 && (target.scrollTop + 1 >= this.maxScroll)){//下边缘
