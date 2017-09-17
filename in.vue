@@ -9,7 +9,6 @@
             closebtn
             cursor
             wrapperCls="kkk"
-            :indicator="indicator"
             indicatorSwitch
             v-model="activeIndex">
             <swiper-tab-header>

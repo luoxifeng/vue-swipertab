@@ -240,6 +240,9 @@ export default {
                 throw new Error("the count of component SwiperTabItem which belong to SwiperTabHeader ," +
                     "must be equal the count of component SwiperTabItem which belong to SwiperTabBody")
 
+            if (this.value >= this.headerSons.length) 
+                throw new Error("the value of v-model must be less than this count of items")
+                
             //验证指示区域的个数是否等于tab的个数
             if (Array.isArray(this.indicator)) {
                 if (this.header && this.headerSons.length != this.indicator.length) {
@@ -253,7 +256,6 @@ export default {
 
         },
         indicatorSwitchTab(type, index){
-            console.log(type, 12)
             if (!this.indicatorSwitch) return;
             if (this.hoverSwitch && type != "hover") return;
             if (!this.hoverSwitch && type == "hover") return;

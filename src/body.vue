@@ -26,7 +26,7 @@ export default {
     props: {},
     computed: {
         direction(){//滑动方向 1向左，-1向右
-            // if(this.tempX - this.startX == 0) return 0;//滑动过快
+            if(this.tempX - this.startX == 0) return 0;//滑动过快
             return this.tempX - this.startX > 0 ? -1 : 1;
         },
         animating(){
@@ -121,11 +121,9 @@ export default {
             //从开始移动到现在移动的距离
             this.moveX = touch.clientX - this.tempX;//水平偏移量
             this.tempX = touch.clientX;
-            console.log(this.tempX + ", " + this.startX, this.moveX)
             if (this.isCanNotSwitch) {//到边界的时候，减速
                 slow = 0.5;
             } else {
-                
                 let next = this.isBeyondDistance(touch) ? this.direction : 0;
                 if(!this.direction) return;
                 this.bus.$emit("slideToIndex", this.currActive + next)
